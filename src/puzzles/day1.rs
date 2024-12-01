@@ -6,23 +6,24 @@ pub fn solve(file_path: impl AsRef<Path>) -> String {
 
     let contents: Vec<String> = filehelper::lines_from_file(file_path);
 
-    let mut left: Vec<i32> = Vec::new();
-    let mut right: Vec<i32> = Vec::new();
-    for line in contents.iter() {
-        let splitted : Vec<&str> = line.split("   ").collect();
-        left.push(splitted[0].parse().unwrap());
-        right.push(splitted[1].parse().unwrap());
-    }
+    let (mut left, mut right): (Vec<i32>, Vec<i32>) = contents
+        .iter()
+        .map(|line| line.split("   ").collect::<Vec<&str>>())
+        .map(|splitted| splitted.iter().map(|s| s.parse().unwrap()).collect::<Vec<i32>>())
+        .map(|splitted| (splitted[0], splitted[1]))
+        .unzip();
+
     left.sort();
     right.sort();
 
-    let mut distance : i32 = 0;
-    let mut similarity : i32 = 0;
-    for i in 0..left.len() {
-        distance += (left[i] - right[i]).abs();
-        let count : i32 = right.iter().filter(|n: &&i32| **n == left[i]).count() as i32;
-        similarity += count * left[i];
-    }
+    let distance : i32 = left.iter()
+                             .zip(right.iter())
+                             .map(|(l, r)| (l-r).abs())
+                             .sum();
+
+    let similarity : i32 = left.iter()
+                               .map(|l| right.iter().filter(|r| **r == *l).count() as i32 * l)
+                               .sum();
 
     return format!("distance {}, similarity {}", distance.to_string(), similarity.to_string());
 }
