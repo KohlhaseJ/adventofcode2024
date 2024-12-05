@@ -1,5 +1,5 @@
 use std::{
-    fs::File,
+    fs::{read_to_string, File},
     io::{prelude::*, BufReader},
     path::Path,
 };
@@ -10,4 +10,8 @@ pub fn lines_from_file(file_path: impl AsRef<Path>) -> Vec<String> {
     buf.lines()
         .map(|l| l.expect("could not parse line"))
         .collect()
+}
+
+pub fn string_from_file(file_path: impl AsRef<Path>) -> String {
+    return read_to_string(file_path).expect("error reading file content as string");
 }

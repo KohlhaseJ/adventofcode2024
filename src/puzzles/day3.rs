@@ -5,8 +5,7 @@ use super::filehelper;
 
 pub fn solve(file_path: impl AsRef<Path>) -> String {
 
-    let contents: Vec<String> = filehelper::lines_from_file(file_path);
-    let content: &str = &contents.concat();
+    let content= &filehelper::string_from_file(file_path);
 
     let multiplication_sum : i32 = extract_multiplications(content).iter()
                         .map(|command| solve_multiplication(command))
