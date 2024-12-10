@@ -1,4 +1,3 @@
-
 use std::path::Path;
 
 use super::filehelper;
@@ -19,7 +18,6 @@ pub fn solve(file_path: impl AsRef<Path>) -> String {
             corrected_page_numbers += corrected[corrected.len()/2];
         }
     }
-
 
     return format!("sum of page numbers {}, sum of corrected page numbers {}", page_numbers, corrected_page_numbers);
 }
