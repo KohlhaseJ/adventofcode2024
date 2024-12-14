@@ -7,7 +7,7 @@ pub fn solve(_file_path: impl AsRef<Path>) -> String {
     let matrix : Vec<Vec<char>> = content.lines().map(|line| line.chars().collect()).collect();
 
     let connected_regions = get_connected_regions(&matrix);
-    let sum_of_prices : usize = connected_regions.iter().map(|(region, connected_region)| {
+    let sum_of_prices : usize = connected_regions.iter().map(|(_region, connected_region)| {
         let area = calculate_area(connected_region);
         let perimeter = calculate_perimeter(connected_region);
         return area*perimeter;
