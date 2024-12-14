@@ -10,7 +10,6 @@ pub fn solve(_file_path: impl AsRef<Path>) -> String {
     let sum_of_prices : usize = connected_regions.iter().map(|(region, connected_region)| {
         let area = calculate_area(connected_region);
         let perimeter = calculate_perimeter(connected_region);
-        println!("region: {}, area: {}, perimeter: {}", region, area, perimeter);
         return area*perimeter;
     }).sum();
 
@@ -69,24 +68,20 @@ fn calculate_perimeter(connected_region: &Vec<(usize, usize)>) -> usize {
 
     let mut perimeter = 0;
     for (row, col) in connected_region {
+        let left: (i32, i32) = (row.clone() as i32, col.clone() as i32 - 1);
+        let right: (i32, i32) = (row.clone() as i32, col.clone() as i32 + 1);
+        let up: (i32, i32) = (row.clone() as i32 - 1, col.clone() as i32);
+        let down: (i32, i32) = (row.clone() as i32 + 1, col.clone() as i32);
 
-        let row_start = connected_region.iter().filter(|(_, j)| j == col).map(|(i, _)| i).min().unwrap();
-        let row_end = connected_region.iter().filter(|(_, j)| j == col).map(|(i, _)| i).max().unwrap();
-        let col_start = connected_region.iter().filter(|(i, _)| i == row).map(|(_, j)| j).min().unwrap();
-        let col_end = connected_region.iter().filter(|(i, _)| i == row).map(|(_, j)| j).max().unwrap();
+        for position in vec![left, right, up, down] {
+            let in_connected_region = connected_region.iter()
+                .filter(|pos| pos.0 == position.0 as usize && pos.1 == position.1 as usize)
+                .count() > 0;
+            if !in_connected_region {
+                perimeter += 1;
+            }
+        }
 
-        if row == row_start {
-            perimeter += 1;
-        }
-        if row == row_end {
-            perimeter += 1;
-        }
-        if col == col_start {
-            perimeter += 1;
-        }
-        if col == col_end {
-            perimeter += 1;
-        }
     }
     return perimeter;
 }
