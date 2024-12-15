@@ -24,6 +24,7 @@ fn main() {
         12 => puzzles::day12::solve(file_path),
         13 => puzzles::day13::solve(file_path),
         14 => puzzles::day14::solve(file_path),
+        15 => puzzles::day15::solve(file_path),
         _ => "day not implemented".to_string()
     };
 
